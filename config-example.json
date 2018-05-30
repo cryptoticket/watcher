@@ -1,0 +1,25 @@
+{
+  "app": {
+    "host": "0.0.0.0",
+    "port": 80
+  },
+
+  "eth_rpc": {
+    "http": "http://rpc.url"
+  },
+
+  "ipfs": {
+    "url": "https://ipfs.io/ipfs/",
+    "protocol": "https",
+    "host": "ipfs.infura.io",
+    "port": 5001
+  },
+
+  "contracts": {
+    "version": "0.0.1-dev",
+    "default": "SampleEvent",
+    "source": "./contracts/source/",
+    "bin": "./contracts/build/bin/",
+    "abi": "./contracts/build/abi/"
+  }
+}
