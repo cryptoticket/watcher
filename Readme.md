@@ -6,7 +6,7 @@
 
 ### Contracts
 
-#### POST contract/:event/info
+#### GET contract/:event/info
 
 Return contract metadata and tickets processing events
 
