@@ -9,6 +9,7 @@ const ticketLib      = require('./lib/ticket');
 
 const ipfs           = new ipfsLib(config.ipfs.protocol, config.ipfs.host, config.ipfs.port, config.ipfs.url);
 const contractAbi    = JSON.parse(fs.readFileSync(`${config.contracts.abi}${config.contracts.default}.abi`));
+const ticketEvents   = ['TicketAllocated', 'TicketRefunded', 'TicketRedeemed',  'TicketTransferred'];
 const app            = express();
 
 app.use(bodyParser.json());
@@ -30,7 +31,7 @@ app.get('/contract/:address/info', function (req, res) {
             console.log(`Contract ${contract.address} events count ${events.length}`);
 
             let promises = [];
-            events.forEach((event) => {
+            events.filter(event => event.event in ticketEvents).forEach((event) => {
                 console.log(`${event.event} ${event.args._ticket} at block ${event.blockNumber}`);
 
                 promises.push(new Promise((resolve) => {
