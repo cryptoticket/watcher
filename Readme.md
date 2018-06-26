@@ -217,7 +217,7 @@ Return contract metadata and tickets processing events
 ```
 
 
-#### GET contract/:address/events
+#### POST contract/:address/events
 
 Return contract tickets processing events for certain blocks. 
 
