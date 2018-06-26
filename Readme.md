@@ -2,6 +2,27 @@
 
 ## Deployment
 
+### Configuration
+
+Copy `config-example.json` to `config.json` and change the values as you needed.
+
+###  Compile SmartContract Sources
+
+```bash
+apt-get install solc
+solc -o contracts/build/bin --optimize --bin contracts/source/Event.sol
+solc -o contracts/build/abi --optimize --abi contracts/source/Event.sol
+```
+
+###  Run
+
+```bash
+git clone git@github.com:cryptoticket/watcher.git
+npm start
+npm install -g pm2
+pm2 start index.json
+```
+
 ## API Description
 
 ### Contracts
@@ -192,6 +213,89 @@ Return contract metadata and tickets processing events
             }
         }
     ]
+}
+```
+
+
+#### GET contract/:address/events
+
+Return contract tickets processing events for certain blocks. 
+
+##### Request 
+
+###### Parameters
+| Parameter | Type | Required | Description |
+|:--:|:--:|:--:|:--:|
+| address | string | Yes | Contract Address in Ethereum Network |
+| from | string | Yes | Start block |
+| to | string | Yes | End block |
+
+##### Response
+
+###### Parameters
+| Parameter | Type | Required | Description |
+|:--:|:--:|:--:|:--:|
+| events | object | Yes | Ticket processing Events |
+| filter | array | Yes | Filtered block numbers |
+
+###### Example
+**200 OK**
+```json
+{
+    "events": [
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x71a41f8125c40fe23179007c8f61e69aad39ab4f743a738fd5492e80f587a735",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368206
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x933fdaa1e2169cc87082e010e40b106209f7f7372e2d898f46ebb0034fc4b6da",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368206
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0xab8dbcaa2a6df5fe64d1a3c17a606c4a4fe0437d2586e68a3d0205c9a5fb8f23",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368206
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x2975764896425c86585f43d60cc8208935f89b1d971d1f0470ed03fea59c9548",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368206
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x7500b8ff97920f60628ab10b0d95944dd95f3fb82af1aab5e399c25310d14c0a",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368208
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x881f56a1ae45f9b0472456ed8f9cfcc0c38ddab5d5d8266cb1c34e07288a8f08",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368208
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x647872e066d1bc03559b69c32d5b4bfd7ac0245c4c98846670c806da8a6708f1",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368208
+        },
+        {
+            "event": "TicketAllocated",
+            "ticket": "0x05d4fa9fe590ac61b384045a1a27e4af6ff8f97c39f0e4744643278c3257f712",
+            "to": "0x4da0e910505d8678d774154096d619fe6515f3b0",
+            "block": 2368208
+        }
+    ],
+    "filter": {
+        "from": 2368206,
+        "to": 2378206
+    }
 }
 ```
 

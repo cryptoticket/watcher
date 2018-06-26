@@ -58,6 +58,44 @@ app.get('/contract/:address/info', function (req, res) {
     });
 });
 
+app.post('/contract/:address/events', function (req, res) {
+    const contract = new eventLib(config.eth_rpc.http, req.params.address, contractAbi);
+
+    contract.connection.eth.getBlockNumber((err, currnetBlock) => {
+        const fromBlock  = req.body.from ? (req.body.from < currnetBlock ? req.body.from : 0) : 0;
+        const toBlock  = req.body.to ? (req.body.to < currnetBlock ? req.body.to : currnetBlock) : currnetBlock;
+
+        contract.instance.allEvents({fromBlock: fromBlock, toBlock: toBlock}).get(function(err, events){
+            if(err) { res.status('422').send({error: 'Contract events fetching error', message: err.message}); return; }
+            console.log(`Contract ${contract.address} events count ${events.length}`);
+
+            let promises = [];
+            events.filter(event => ticketEvents.includes(event.event)).forEach((event) => {
+                console.log(`${event.event} ${event.args._ticket} at block ${event.blockNumber}`);
+
+                promises.push(new Promise((resolve) => {
+                    console.log(event);
+
+                    resolve({
+                        event: event.event,
+                        ticket: event.args._ticket,
+                        from: event.args._from,
+                        to: event.args._to,
+                        block: event.blockNumber
+                    });
+                }));
+            });
+
+            Promise.all(promises).then((ticket) => {
+                res.send({
+                    events: [].concat.apply([], ticket),
+                    filter: {from: fromBlock, to: toBlock}
+                })
+            });
+        });
+    });
+});
+
 app.post('/ticket/:ticket/info', function (req, res) {
     const event  = req.body.event;
     const ticket = req.params.ticket;
