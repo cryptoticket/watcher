@@ -20,7 +20,7 @@ solc -o contracts/build/abi --optimize --abi contracts/source/Event.sol
 git clone git@github.com:cryptoticket/watcher.git
 npm install
 npm install -g pm2
-pm2 start index.json
+pm2 start index.js
 ```
 
 ## API Description
