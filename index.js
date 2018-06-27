@@ -31,7 +31,7 @@ app.get('/contract/:address/info', function (req, res) {
             console.log(`Contract ${contract.address} events count ${events.length}`);
 
             let promises = [];
-            events.filter(event => event.event in ticketEvents).forEach((event) => {
+            events.filter(event => ticketEvents.includes(event.event)).forEach((event) => {
                 console.log(`${event.event} ${event.args._ticket} at block ${event.blockNumber}`);
 
                 promises.push(new Promise((resolve) => {
@@ -74,13 +74,13 @@ app.post('/contract/:address/events', function (req, res) {
                 console.log(`${event.event} ${event.args._ticket} at block ${event.blockNumber}`);
 
                 promises.push(new Promise((resolve) => {
-                    console.log(event);
 
                     resolve({
                         event: event.event,
                         ticket: event.args._ticket,
                         from: event.args._from,
                         to: event.args._to,
+                        ipfs: ipfs.getIpfsHashFromBytes32(event.args._ticket),
                         block: event.blockNumber
                     });
                 }));
