@@ -18,7 +18,7 @@ solc -o contracts/build/abi --optimize --abi contracts/source/Event.sol
 
 ```bash
 git clone git@github.com:cryptoticket/watcher.git
-npm start
+npm install
 npm install -g pm2
 pm2 start index.json
 ```
